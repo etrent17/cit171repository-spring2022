@@ -1,4 +1,4 @@
-# STEDI Build Steps
+git# STEDI Build Steps
 
 `git clone https://github.com/BYUI-CIT-262/stedi-content`
 
