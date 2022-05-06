@@ -38,7 +38,7 @@
     const saveRapidStepTest = (rapidStepTest) => {
         $.ajax({
             type: 'POST',
-            url: 'https://dev.stedi.me/rapidsteptest',
+            url: '/rapidsteptest',
             data: JSON.stringify(rapidStepTest), // or JSON.stringify ({name: 'jonas'}),
             statusCode:{
                 401: () => window.location.href="/",
@@ -53,7 +53,7 @@
     const getRiskScore = () => {
         $.ajax({
             type: 'GET',
-            url: 'https://dev.stedi.me/riskscore/'+$('#email').html(),
+            url: '/riskscore/'+$('#email').html(),
             success: function(data) {
                 let customerRisk = JSON.parse(data);
                 document.getElementById('score').innerHTML = customerRisk.score;
@@ -78,7 +78,7 @@
         let tokenEmail="";
         $.ajax({
            type: 'GET',
-            url: 'https://dev.stedi.me/validate/'+usertoken,
+            url: '/validate/'+usertoken,
             success: function(data){
                if (data==""){
                  window.location="/"
