@@ -28,14 +28,16 @@ const Icons = () => {
 };
 
 export default Icons;
-const cardWidth = (Dimensions.get('window').width) / 3;
+const cardWidth = (Dimensions.get('window').width) / 4;
 
 const styles = StyleSheet.create({
   icons: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignContent: 'center',
-    height: '85%'
+    alignContent: 'flex-start',
+    justifyContent: 'center',
+    height: '75%',
+    width: "100%"
   },
   image: {
     maxWidth: cardWidth

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Counter from './Counter.js';
@@ -12,9 +12,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import Icons from "./Icons";
 const Tab = createMaterialBottomTabNavigator();
 
-export default function App() {
+export default function App(props) {
   return (
+    
     <NavigationContainer>
+      
       <Tab.Navigator
         initialRouteName='Home'
         activeColor='white'
@@ -51,7 +53,9 @@ export default function App() {
           }}
         />
       </Tab.Navigator>
+      
     </NavigationContainer>
+    
   );
 
 
