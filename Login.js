@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { SafeAreaView, StyleSheet, TextInput } from 'react-native';
 
 const Login = () => {
@@ -18,7 +18,7 @@ const Login = () => {
           style={styles.input}
           onChangeText={setOneTimePassword}
           value={oneTimePassword}
-          placeholder="Enter Phone Number"
+          placeholder="1234"
           keyboardType="numeric"
           secureTextEntry={true}
         />
