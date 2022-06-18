@@ -1,12 +1,28 @@
 import React, {useState} from 'react';
-import { SafeAreaView, StyleSheet, TextInput } from 'react-native';
+import { AppRegistry, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text, View } from 'react-native';
+
+const sendText = async (phoneNumber) => {
+	console.log("PhoneNumber: ", phoneNumber)
+	await fetch('https://dev.stedi.me/twofactorlogin/' + phoneNumber, {
+		method: 'POST',
+		headers: {'Content-Type': 'application/text'}})
+}
 
 const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [oneTimePassword, setOneTimePassword] = useState(null);
+		const[count, setCount] = useState(0)
+		const onPress = () => setCount(prevCount => prevCount + 1)
   
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.margin}>
+        <View style={styles.titleBox}>
+
+        <Text style={styles.textTitle}>
+          Login Here
+        </Text>
+        </View>
+        
         <TextInput
           style={styles.input}
           onChangeText={setPhoneNumber}
@@ -22,6 +38,19 @@ const Login = () => {
           keyboardType="numeric"
           secureTextEntry={true}
         />
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={()=>console.log("Login Button was Clicked")}
+          >
+          <Text>Login</Text>
+        </TouchableOpacity>
+		<TouchableOpacity
+          style={styles.button}
+          onPress={()=>{sendText(phoneNumber)}}
+          >
+          <Text>Get OTP</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   };
@@ -33,6 +62,25 @@ const Login = () => {
       borderWidth: 1,
       padding: 10,
     },
+    textTitle: {
+      fontFamily: "sans-serif" ,
+      fontSize: 30
+    },
+    titleBox: {
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    margin:{
+      marginTop:"50%",
+      backgroundColor: "lavender"
+    },
+    button:{
+      alignItems: "center",
+      backgroundColor: "lightsalmon",
+      padding: 10
+    }
   });
   
   export default Login;
+
+
