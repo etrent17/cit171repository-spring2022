@@ -17,7 +17,7 @@ const getToken = async ({phoneNumber, oneTimePassword}) =>{
 		}
 	});
 
-	const tokenResponseString = tokenResponse.text();
+	const tokenResponseString = await tokenResponse.text();
 }
 
 const image = {uri: "https://images.pexels.com/photos/8046382/pexels-photo-8046382.jpeg?cs=srgb&dl=pexels-beyza-erdem-8046382.jpg&fm=jpg"}
@@ -63,9 +63,8 @@ const Login = () => {
         </TouchableOpacity>
 		<TouchableOpacity
           style={styles.button}
-          onPress={()=>{sendText(getToken({phoneNumber, getToken}));
-        }}
-          >
+          onPress={()=>{sendText({phoneNumber, getToken})}}
+					>
           <Text>Get OTP</Text>
         </TouchableOpacity>
       </SafeAreaView>
