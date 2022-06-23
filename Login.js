@@ -1,12 +1,26 @@
 import React, {useState} from 'react';
-import { AppRegistry, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text, View } from 'react-native';
+import { ImageBackground, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text, View } from 'react-native';
 
 const sendText = async (phoneNumber) => {
 	console.log("PhoneNumber: ", phoneNumber)
 	await fetch('https://dev.stedi.me/twofactorlogin/' + phoneNumber, {
 		method: 'POST',
-		headers: {'Content-Type': 'application/text'}})
+		headers: {'Content-Type': 'application/text'}});
 }
+
+const getToken = async ({phoneNumber, oneTimePassword}) =>{
+	const tokenResponse = await fetch('https://dev.stedi.me/twofactorlogin',{
+		method: 'POST',
+		body: JSON.stringify({oneTimePassword, phoneNumber}),
+		headers: {
+			'content-type':'application/json'
+		}
+	});
+
+	const tokenResponseString = tokenResponse.text();
+}
+
+const image = {uri: "https://images.pexels.com/photos/8046382/pexels-photo-8046382.jpeg?cs=srgb&dl=pexels-beyza-erdem-8046382.jpg&fm=jpg"}
 
 const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -15,6 +29,8 @@ const Login = () => {
 		const onPress = () => setCount(prevCount => prevCount + 1)
   
     return (
+      <ImageBackground
+      source={image} resizeMode="cover" style={styles.image}>
       <SafeAreaView style={styles.margin}>
         <View style={styles.titleBox}>
 
@@ -41,17 +57,19 @@ const Login = () => {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={()=>console.log("Login Button was Clicked")}
+          onPress={()=>{getToken(phoneNumber, oneTimePassword)}}
           >
           <Text>Login</Text>
         </TouchableOpacity>
 		<TouchableOpacity
           style={styles.button}
-          onPress={()=>{sendText(phoneNumber)}}
+          onPress={()=>{sendText(getToken({phoneNumber, getToken}));
+        }}
           >
           <Text>Get OTP</Text>
         </TouchableOpacity>
       </SafeAreaView>
+      </ImageBackground>
     );
   };
   
@@ -71,14 +89,20 @@ const Login = () => {
       justifyContent: "center"
     },
     margin:{
-      marginTop:"50%",
+      marginTop:"30%",
       backgroundColor: "lavender"
     },
     button:{
       alignItems: "center",
       backgroundColor: "lightsalmon",
-      padding: 10
-    }
+      padding: 10,
+      borderBottomColor: '#CB624B',
+      borderBottomWidth: 2,
+    },
+    image: {
+      flex: 1,
+      //justifyContent: "center"
+    },
   });
   
   export default Login;
