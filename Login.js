@@ -8,7 +8,7 @@ const sendText = async (phoneNumber) => {
 		headers: {'Content-Type': 'application/text'}});
 }
 
-const getToken = async ({phoneNumber, oneTimePassword}) =>{
+const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn}) =>{
 	const tokenResponse = await fetch('https://dev.stedi.me/twofactorlogin',{
 		method: 'POST',
 		body: JSON.stringify({oneTimePassword, phoneNumber}),
@@ -20,9 +20,9 @@ const getToken = async ({phoneNumber, oneTimePassword}) =>{
 	const tokenResponseString = await tokenResponse.text();
 }
 
-const image = {uri: "https://images.pexels.com/photos/8046382/pexels-photo-8046382.jpeg?cs=srgb&dl=pexels-beyza-erdem-8046382.jpg&fm=jpg"}
+const image = {uri: "https://musicart.xboxlive.com/7/12461200-0000-0000-0000-000000000002/504/image.jpg?w=1920&h=1080"}
 
-const Login = () => {
+const Login = (props) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [oneTimePassword, setOneTimePassword] = useState(null);
 		const[count, setCount] = useState(0)
@@ -57,8 +57,10 @@ const Login = () => {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={()=>{getToken(phoneNumber, oneTimePassword)}}
-          >
+          onPress={()=>{
+						getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn});
+					}}          
+					>
           <Text>Login</Text>
         </TouchableOpacity>
 		<TouchableOpacity
