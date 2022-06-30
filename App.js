@@ -15,12 +15,12 @@ import Login from './Login.js';
 const Tab = createMaterialBottomTabNavigator();
 
 export default function App(props) {
-  const [userLoggedIn, setUserLoggedIn] = useState(false)
+  const [userLoggedIn, setUserLoggedIn] = useState(true)
   if(userLoggedIn) {
     return (
-      
+
       <NavigationContainer>
-        
+
         <Tab.Navigator
           initialRouteName='Home'
           activeColor='white'
@@ -57,10 +57,10 @@ export default function App(props) {
             }}
           />
         </Tab.Navigator>
-        
+
       </NavigationContainer>
-      
-    )
+
+    );
   } else {
 
     return <Login setUserLoggedIn={setUserLoggedIn}/>
@@ -69,5 +69,5 @@ export default function App(props) {
 
 
 const styles = StyleSheet.create({
-  
+
 });

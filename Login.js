@@ -1,111 +1,108 @@
-import React, {useState} from 'react';
-import { ImageBackground, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text, View } from 'react-native';
+import {useState} from "react";
+import { SafeAreaView, StyleSheet, TextInput, Text, TouchableOpacity, ImageBackground } from "react-native";
+import { clickProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 
-const sendText = async (phoneNumber) => {
-	console.log("PhoneNumber: ", phoneNumber)
-	await fetch('https://dev.stedi.me/twofactorlogin/' + phoneNumber, {
-		method: 'POST',
-		headers: {'Content-Type': 'application/text'}});
+const sendText= async (phoneNumber)=>{
+  console.log("PhoneNumber: ",phoneNumber);
+  await fetch('https://dev.stedi.me/twofactorlogin/'+phoneNumber, {
+    method: 'POST',
+    headers:{
+      'content-type':'application/text'
+    }
+  });
 }
 
 const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn}) =>{
-	const tokenResponse = await fetch('https://dev.stedi.me/twofactorlogin',{
-		method: 'POST',
-		body: JSON.stringify({oneTimePassword, phoneNumber}),
-		headers: {
-			'content-type':'application/json'
-		}
-	});
+  const tokenResponse = await fetch('https://dev.stedi.me/twofactorlogin',{
+    method: 'POST',
+    body:JSON.stringify({phoneNumber, oneTimePassword}),
+    headers: {
+      'content-type':'application/json'
+    }
+  });
 
-	const tokenResponseString = await tokenResponse.text();
+  const responseCode = tokenResponse.status;// 200 means logged in
+  console.log("Response Status Code", responseCode);
+  if(responseCode==200){
+    setUserLoggedIn(true);
+  }
+  const tokenResponseString = await tokenResponse.text();
 }
 
-const image = {uri: "https://musicart.xboxlive.com/7/12461200-0000-0000-0000-000000000002/504/image.jpg?w=1920&h=1080"}
+const image = {uri: "https://cdn.quotesgram.com/small/23/20/1497809967-b3d5d041736276bdf3a95792634592f2.jpg"}
+
+const getEmail = (props) =  async ({phoneNumber, oneTimePassword}) => {
+  console.log("Response Status Code", responseCode);
+  if(setUserLoggedIn == true){
+    setUserEmail = setUserEmail;
+  }
+}
 
 const Login = (props) => {
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [oneTimePassword, setOneTimePassword] = useState(null);
-		const[count, setCount] = useState(0)
-		const onPress = () => setCount(prevCount => prevCount + 1)
-  
-    return (
-      <ImageBackground
-      source={image} resizeMode="cover" style={styles.image}>
-      <SafeAreaView style={styles.margin}>
-        <View style={styles.titleBox}>
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [oneTimePassword, setOneTimePassword] = useState(null);
 
-        <Text style={styles.textTitle}>
-          Login Here
-        </Text>
-        </View>
-        
-        <TextInput
-          style={styles.input}
-          onChangeText={setPhoneNumber}
-          value={phoneNumber}
-          placeholder="123-456-7890"
-          keyboardType="phone-pad"
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setOneTimePassword}
-          value={oneTimePassword}
-          placeholder="1234"
-          keyboardType="numeric"
-          secureTextEntry={true}
-        />
+  return (
+    <ImageBackground
+    source={image} resizeMode="cover" style={styles.image}>
+    <SafeAreaView >
+      <TextInput
+        style={styles.input}
+        onChangeText={setPhoneNumber}
+        value={phoneNumber}
+        placeholderTextColor = '#4251f5'
+        placeholder= "801-555-1212"
+      />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={()=>{
+          sendText(phoneNumber);
+        }}
+      >
+        <Text>Send Text</Text>
+      </TouchableOpacity>
+      <TextInput
+        style={styles.input}
+        onChangeText={setOneTimePassword}
+        value={oneTimePassword}
+        placeholder="1234"
+        keyboardType="numeric"
+        secureTextEntry={true}
+      />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={()=>{
+          getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn});
+        }}
+      >
+        <Text>Login</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+    </ImageBackground>
+  );
+};
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={()=>{
-						getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn});
-					}}          
-					>
-          <Text>Login</Text>
-        </TouchableOpacity>
-		<TouchableOpacity
-          style={styles.button}
-          onPress={()=>{sendText({phoneNumber, getToken})}}
-					>
-          <Text>Get OTP</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
-      </ImageBackground>
-    );
-  };
-  
-  const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-    },
-    textTitle: {
-      fontFamily: "sans-serif" ,
-      fontSize: 30
-    },
-    titleBox: {
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    margin:{
-      marginTop:"30%",
-      backgroundColor: "lavender"
-    },
-    button:{
-      alignItems: "center",
-      backgroundColor: "lightsalmon",
-      padding: 10,
-      borderBottomColor: '#CB624B',
-      borderBottomWidth: 2,
-    },
-    image: {
-      flex: 1,
-      //justifyContent: "center"
-    },
-  });
-  
-  export default Login;
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    backgroundColor: '#ffffff'
+  },
+  margin:{
+    marginTop:100
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    padding: 10
+  },
+  image: {
+    flex: 1,
+    marginTop:100
+    //justifyContent: "center"
+  },
+});
 
-
+export default Login;
