@@ -12,6 +12,11 @@ const sendText= async (phoneNumber)=>{
   });
 }
 
+
+
+
+
+
 const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn}) =>{
   const tokenResponse = await fetch('https://dev.stedi.me/twofactorlogin',{
     method: 'POST',
@@ -19,6 +24,7 @@ const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn}) =>{
     headers: {
       'content-type':'application/json'
     }
+
   });
 
   const responseCode = tokenResponse.status;// 200 means logged in
@@ -27,16 +33,27 @@ const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn}) =>{
     setUserLoggedIn(true);
   }
   const tokenResponseString = await tokenResponse.text();
+  const emailResponse = await fetch('https://dev.stedi.me/validate/' + tokenResponseString,
+  {
+    method: 'GET',
+    headers:
+    {
+      'content-type': 'application/json'
+    }
+  }
+);
+  const email = await emailResponse.text();
+
+
+  props.setUserName(email);
 }
 
 const image = {uri: "https://cdn.quotesgram.com/small/23/20/1497809967-b3d5d041736276bdf3a95792634592f2.jpg"}
 
-const getEmail = (props) =  async ({phoneNumber, oneTimePassword}) => {
-  console.log("Response Status Code", responseCode);
-  if(setUserLoggedIn == true){
-    setUserEmail = setUserEmail;
-  }
-}
+
+
+
+
 
 const Login = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");

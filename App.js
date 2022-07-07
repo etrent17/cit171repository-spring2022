@@ -15,7 +15,8 @@ import Login from './Login.js';
 const Tab = createMaterialBottomTabNavigator();
 
 export default function App(props) {
-  const [userLoggedIn, setUserLoggedIn] = useState(true)
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [userName,setUserName] = useState(''); // creates a state variable
   if(userLoggedIn) {
     return (
 
@@ -63,7 +64,7 @@ export default function App(props) {
     );
   } else {
 
-    return <Login setUserLoggedIn={setUserLoggedIn}/>
+    return <Login setUserLoggedIn={setUserLoggedIn} setUserName={setUserName}/>
   }
 }
 
