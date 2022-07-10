@@ -13,7 +13,15 @@ const sendText= async (phoneNumber)=>{
 }
 
 
+const setUserName = async tokenResponseString => {
+  const some_token = await fetch('https://dev.stedi.me/validate/'
+    + tokenResponseString,
+      {method: 'GET'}
+  )
 
+  const userName = await some_token.text()
+  console.log('You are logged in as: ', userName)
+}
 
 
 
@@ -68,7 +76,7 @@ const Login = (props) => {
         onChangeText={setPhoneNumber}
         value={phoneNumber}
         placeholderTextColor = '#4251f5'
-        placeholder= "801-555-1212"
+        placeholder= "123-456-7890"
       />
       <TouchableOpacity
         style={styles.button}

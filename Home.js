@@ -6,13 +6,13 @@ import Bar  from './Bar.js';
 import getToken from './Login.js';
 
 //const setUserEmail = setUserEmail
-const setUserEmail = 'trent6679@gmail.com'
+// const setUserEmail = 'trent6679@gmail.com'
 
-const Home = () => {
+const Home = (props) => {
   return (
     <SafeAreaView style={{flex: 1, marginTop: 30, justifyContent: 'flex-start'}}>
     <View>
-      <Bar/>
+      <Bar loggedInUser={props.loggedInUser}/>
       <Icons />
     </View>
     </SafeAreaView>

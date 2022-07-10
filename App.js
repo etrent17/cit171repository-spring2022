@@ -19,9 +19,7 @@ export default function App(props) {
   const [userName,setUserName] = useState(''); // creates a state variable
   if(userLoggedIn) {
     return (
-
       <NavigationContainer>
-
         <Tab.Navigator
           initialRouteName='Home'
           activeColor='white'
@@ -29,7 +27,10 @@ export default function App(props) {
         >
           <Tab.Screen
             name='Home'
-            component={Home}
+            children = {
+              () => <Home loggedInUser = {userName}/>
+            }
+            //component={Home}
             options={{
               tabBarLabel: 'Home',
               tabBarIcon: ({ color }) => (
