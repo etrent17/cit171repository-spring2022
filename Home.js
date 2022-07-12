@@ -11,7 +11,8 @@ import getToken from './Login.js';
 const Home = (props) => {
   return (
     <SafeAreaView style={{flex: 1, marginTop: 30, justifyContent: 'flex-start'}}>
-    <View>
+    <View style = {{flex: 1, marginTop: 30, justifyContent: 'flex-start'}}>
+      
       <Bar loggedInUser={props.loggedInUser}/>
       <Icons />
     </View>

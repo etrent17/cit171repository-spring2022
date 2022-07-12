@@ -69,9 +69,10 @@ export default function App(props) {
     );
   } else {
 
-    return <Login
+    return( <Login
         setUserLoggedIn={setUserLoggedIn}
         setUserEmail={setUserEmail}/>
+      )
   }
 }
 
