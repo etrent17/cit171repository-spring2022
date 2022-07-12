@@ -4,56 +4,39 @@ import { clickProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 
 const sendText= async (phoneNumber)=>{
   console.log("PhoneNumber: ",phoneNumber);
-  await fetch('https://dev.stedi.me/twofactorlogin/'+phoneNumber, {
+  const loginResponse = await fetch('https://dev.stedi.me/twofactorlogin/'+phoneNumber, {
     method: 'POST',
     headers:{
       'content-type':'application/text'
     }
   });
+  const loginResponseText = await loginResponse.text()
 }
 
 
-const setUserName = async tokenResponseString => {
-  const some_token = await fetch('https://dev.stedi.me/validate/'
-    + tokenResponseString,
-      {method: 'GET'}
-  )
-
-  const userName = await some_token.text()
-  console.log('You are logged in as: ', userName)
-}
-
-
-
-const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn}) =>{
-  const tokenResponse = await fetch('https://dev.stedi.me/twofactorlogin',{
+const getToken = async ({phoneNumber, oneTimePassword, setUserLoggedIn, setUserEmail}) =>{
+  const loginResponse = await fetch('https://dev.stedi.me/twofactorlogin',{
     method: 'POST',
     body:JSON.stringify({phoneNumber, oneTimePassword}),
     headers: {
-      'content-type':'application/json'
+      'Content-Type':'application/json'
     }
 
   });
 
-  const responseCode = tokenResponse.status;// 200 means logged in
-  console.log("Response Status Code", responseCode);
+  const responseCode = loginResponse.status;// 200 means logged in
+  //console.log("Response Status Code", responseCode);
   if(responseCode==200){
+    const token = await loginResponse.text();
+    console.log(token);
+    const emailResponse = await fetch('https://dev.stedi.me/validate/'+token);
+    const tokenEmail = await emailResponse.text();
+    console.log('tokenEmail: '+ tokenEmail);
+    setUserEmail(tokenEmail);
     setUserLoggedIn(true);
   }
-  const tokenResponseString = await tokenResponse.text();
-  const emailResponse = await fetch('https://dev.stedi.me/validate/' + tokenResponseString,
-  {
-    method: 'GET',
-    headers:
-    {
-      'content-type': 'application/json'
-    }
-  }
-);
-  const email = await emailResponse.text();
 
 
-  props.setUserName(email);
 }
 
 const image = {uri: "https://cdn.quotesgram.com/small/23/20/1497809967-b3d5d041736276bdf3a95792634592f2.jpg"}
@@ -69,7 +52,7 @@ const Login = (props) => {
 
   return (
     <ImageBackground
-    source={image} resizeMode="cover" style={styles.image}>
+     resizeMode="cover" style={styles.image}>
     <SafeAreaView >
       <TextInput
         style={styles.input}
@@ -97,7 +80,7 @@ const Login = (props) => {
       <TouchableOpacity
         style={styles.button}
         onPress={()=>{
-          getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn});
+          getToken({phoneNumber, oneTimePassword, setUserLoggedIn:props.setUserLoggedIn, setUserEmail:props.setUserEmail});
         }}
       >
         <Text>Login</Text>

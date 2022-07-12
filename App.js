@@ -16,8 +16,10 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function App(props) {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [userName,setUserName] = useState(''); // creates a state variable
+  const [userEmail,setUserEmail] = useState(''); // creates a state variable
   if(userLoggedIn) {
+
+      console.log("email:" + userEmail)
     return (
       <NavigationContainer>
         <Tab.Navigator
@@ -28,10 +30,12 @@ export default function App(props) {
           <Tab.Screen
             name='Home'
             children = {
-              () => <Home loggedInUser = {userName}/>
+              () => <Home loggedInUser = {userEmail}/>
             }
             //component={Home}
+
             options={{
+              userEmail: {userEmail},
               tabBarLabel: 'Home',
               tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name='home' color={color} size={26} />
@@ -65,7 +69,9 @@ export default function App(props) {
     );
   } else {
 
-    return <Login setUserLoggedIn={setUserLoggedIn} setUserName={setUserName}/>
+    return <Login
+        setUserLoggedIn={setUserLoggedIn}
+        setUserEmail={setUserEmail}/>
   }
 }
 
